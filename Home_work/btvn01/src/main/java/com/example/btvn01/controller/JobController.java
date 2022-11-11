@@ -2,6 +2,7 @@ package com.example.btvn01.controller;
 
 
 import com.example.btvn01.model.Job;
+import com.example.btvn01.request.UpsertJobRequest;
 import com.example.btvn01.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
@@ -15,6 +16,36 @@ import java.util.List;
 public class JobController {
     @Autowired
     private JobService jobService;
+
+    // GET : api/v1/jobs : Lấy danh sách tất cả job
+    @GetMapping("jobs")
+    public List<Job> getJobs() {
+        return jobService.getJobs();
+    }
+
+    // GET : api/v1/jobs/{id} : Lấy chi tiết 1 job theo id
+    @GetMapping("jobs/{id}")
+    public Job getJobById(@PathVariable int id) {
+        return jobService.getJobById(id);
+    }
+
+    // POST : api/v1/jobs : Tạo mới Job -> Đối tượng sau khi tạo
+    @PostMapping("jobs")
+    public Job createJobs(@RequestBody UpsertJobRequest request) {
+        return jobService.createJobs(request);
+    }
+
+    // PUT : api/v1/jobs/{id} : Cập nhật thông tin job -> Đối tượng sau khi cập nhật
+    @PutMapping("jobs/{id}")
+    public Job updateJob(@PathVariable int id, @RequestBody UpsertJobRequest request) {
+        return jobService.updateJob(id, request);
+    }
+
+    // DELETE : api/v1/jobs/{id} : Xóa cuốn sách theo id
+    @DeleteMapping("jobs/{id}")
+    public void deleteJob(@PathVariable int id) {
+        jobService.deleteJob(id);
+    }
 
     // GET api/v1/jobs/random : trả về một job ngẫu nhiên trong danh sách
     @GetMapping("jobs/random")

@@ -1,13 +1,17 @@
 package com.example.btvn01.service;
 
 import com.example.btvn01.model.Job;
+import com.example.btvn01.request.UpsertJobRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Service
 public class JobService {
@@ -28,6 +32,46 @@ public class JobService {
         Random rd = new Random();
         Job job = jobs.get(rd.nextInt(jobs.size()));
         return  job;
+    }
+    public List<Job> getJobs() {
+        return jobs;
+    }
+    public Job getJobById(int id) {
+        for (Job job : jobs) {
+            if (job.getId() == id) {
+                return  job;
+            }
+        }
+        return  null;
+    }
+    public Job createJobs(UpsertJobRequest request) {
+        Random rd = new Random();
+        int id = rd.nextInt(1000);
+
+        Job job = new Job(id, request.getTitle(), request.getDescription(),
+                       request.getLocation(), request.getMinSalary(), request.getMaxSalary(),
+                       request.getEmailTo());
+        jobs.add(job);
+        return  job;
+    }
+    public Job updateJob(int id,  UpsertJobRequest request) {
+        for (Job job : jobs) {
+            if (job.getId() == id) {
+                job.setTitle(request.getTitle());
+                job.setDescription(request.getDescription());
+                job.setLocation(request.getLocation());
+                job.setMaxSalary(request.getMaxSalary());
+                job.setMinSalary(request.getMinSalary());
+                job.setEmailTo(request.getEmailTo());
+
+                return  job;
+            }
+
+        };
+        return  null;
+    }
+    public void deleteJob(int id) {
+       jobs.removeIf(job -> job.getId() == id );
     }
     public List<Job> getSortJobB(String max_salary) {
         List sortJobs = new ArrayList<>(jobs);
