@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 public class UserController {
     @Autowired
@@ -16,7 +18,7 @@ public class UserController {
 
     //POST http://localhost:8080/login
     @PostMapping("login")
-    public UserDto login(@RequestBody UpsertUserRequest request) {
+    public UserDto login(@Valid @RequestBody UpsertUserRequest request) {
         return userService.login(request);
     }
 }

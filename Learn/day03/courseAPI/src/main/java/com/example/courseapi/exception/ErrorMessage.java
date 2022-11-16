@@ -1,4 +1,4 @@
-package com.example.btvn2login.exception;
+package com.example.courseapi.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,10 +8,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ErrorMessage {
     private HttpStatus status;
     private Object message;
-
 }
