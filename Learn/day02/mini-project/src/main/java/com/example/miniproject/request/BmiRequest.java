@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpsertBMIRequest {
+public class BmiRequest {
     private double height;
     private double weight;
 }
