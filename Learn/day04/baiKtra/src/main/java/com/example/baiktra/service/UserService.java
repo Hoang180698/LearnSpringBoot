@@ -13,6 +13,7 @@ import com.example.baiktra.request.UpsertUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ import java.util.Random;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FileService fileService;
 
     public List<UserDto> findUserByName(String name) {
         List<User> users = userRepository.getUsersByName(name);
@@ -56,7 +60,7 @@ public class UserService {
         User user = new User();
         user.setId(id);
         user.setName(request.getName());
-        user.setAddress(request.getName());
+        user.setAddress(request.getAddress());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
         user.setPhone(request.getPhone());
@@ -101,7 +105,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Not found user with id = " + id);
         });
-        if (user.getPassword().equals(request.getOldPassword())) {
+        if (!user.getPassword().equals(request.getOldPassword())) {
             throw new BadRequestException("Mat khau cu khong chinh xac");
         }
         if (user.getPassword().equals(request.getNewPassword())) {
@@ -137,5 +141,44 @@ public class UserService {
 
         return usersListView;
 
+    }
+
+    public String uploadFile(int id, MultipartFile file) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with id = " + id);
+        });
+        return fileService.uploadFile(id, file);
+    }
+
+    public byte[] readFile(int id, String fileId) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with id = " + id);
+        });
+        return fileService.readFile(id, fileId);
+    }
+
+    public List<String> getFiles(int id) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with id = " + id);
+        });
+        return fileService.getFiles(id);
+    }
+    public void deleteFile(int id, String fileId) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with id = " + id);
+        });
+        fileService.deleteFile(id, fileId);
+    }
+
+    // lấy danh sách tất cả user
+    public List<UserDto> getUsers() {
+        List<User> users = userRepository.getAllUser();
+        List<UserDto> userDtos = new ArrayList<>();
+        for (User user : users) {
+            UserDto userDto = new UserDto();
+            userDto.loadFromUser(user);
+            userDtos.add(userDto);
+        }
+        return userDtos;
     }
 }

@@ -7,17 +7,27 @@ import com.example.baiktra.request.AvatarUserRequest;
 import com.example.baiktra.request.PassRequest;
 import com.example.baiktra.request.UpdateUserRequest;
 import com.example.baiktra.request.UpsertUserRequest;
-import com.example.baiktra.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.example.baiktra.service.UserService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1")
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    // Lấy danh sách list user
+    @GetMapping("allUsers")
+    public List<UserDto> getUsers() {
+        return userService.getUsers();
+    }
 
     //GET http://localhost:8080/api/v1/users : Lấy danh sách users
     @GetMapping("users")
@@ -79,6 +89,43 @@ public class UserController {
     }
 
 
+    // Upload ảnh
+    // c1 : Lưu trực tiếp vào database
+    // c2 : Lưu ảnh vào 1 folder ở server -> lưu path image vào database
+    // Trong trường hợp k có database : Lưu ảnh vào 1 folder ở server
+    // -> sử dụng userId, fileId để tìm kiếm trong folder
 
+    // uploads
+    // 1, 2, 3 : folder tương ứng với userId
+    // trong folder userId là các ảnh mà user đó upload
 
+    @PostMapping("/users/{id}/files")
+    public ResponseEntity<?> uploadFile(@PathVariable int id, @ModelAttribute("file")MultipartFile file) {
+        String filePath = userService.uploadFile(id, file);
+        return ResponseEntity.ok(filePath);
+    }
+
+    // Xem ảnh -> byte[]
+    @GetMapping("/users/{id}/files/{fileId}")
+    public ResponseEntity<?> readFile(@PathVariable int id, @PathVariable String fileId) {
+        byte[] bytes = userService.readFile(id, fileId);
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(bytes);
+    }
+
+    // Lấy danh sách ảnh
+    // /api/v1/users/2/files/1671023375
+    @GetMapping("users/{id}/files")
+    public ResponseEntity<?> getFiles(@PathVariable int id) {
+        List<String> files = userService.getFiles(id);
+        return ResponseEntity.ok(files); // 200
+    }
+
+    // Xóa ảnh
+    @DeleteMapping("users/{id}/files/{fileId}")
+    public ResponseEntity<?> deleteFiles(@PathVariable int id, @PathVariable String fileId) {
+       userService.deleteFile(id, fileId);
+       return ResponseEntity.noContent().build(); //204
+    }
 }

@@ -22,7 +22,7 @@ public class UserDto {
         this.id = user.getId();
         this.name = user.getName();
         this.address = user.getAddress();
-        this.email = user.getPhone();
+        this.email = user.getEmail();
         this.avatar = user.getAvatar();
         this.phone = user.getPhone();
     }
