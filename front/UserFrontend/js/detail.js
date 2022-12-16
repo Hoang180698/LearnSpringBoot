@@ -13,6 +13,10 @@ let url = new URL(url_wed);
 let search_params = url.searchParams; 
 let id = search_params.get('id');
 
+if (!id) {
+    window.location.href = "./404.html";
+}
+
 let user;
 
 const getProvinces = async() => {
@@ -96,3 +100,48 @@ btnForgotPass.addEventListener("click", async function() {
 getUser();
 getProvinces();
 
+
+// Truy cập
+const imageContainerEl = document.querySelector(".image-container");
+// Quản lý ảnh
+let images = [];
+
+const getImages = async () => {
+    try {
+        let res = await axios.get(`${API_URL}/users/${id}/files`);
+        console.log(res);
+
+        images = res.data;
+        renderPaginationAndRenderImg(images);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// Hiển thị trên UI
+const renderImages = arr => {
+    imageContainerEl.innerHTML = "";
+    let html = "";
+    arr.forEach(i => {
+        html += `
+            <div class="image-item">
+                <img src="http://localhost:8080${i}" alt="ảnh">
+            </div>
+        `
+    });
+    imageContainerEl.innerHTML = html;
+}
+// Phân Trang
+const renderPaginationAndRenderImg = arr => {
+    $('.pagination-container').pagination({
+        dataSource: arr,
+        pageSize : 8,
+        callback: function(data, pagination) {
+           console.log(data);
+           console.log(pagination);
+           renderImages(data);
+        }
+    })
+}
+
+getImages();

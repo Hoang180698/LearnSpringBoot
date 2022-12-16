@@ -24,7 +24,6 @@ const renderProvinces = arr => {
 
 btnSave.addEventListener("click", async function() {
     try {
-        // Gọi API
         let res = await axios.post("http://localhost:8080/api/v1/users", {
             name : document.getElementById('name').value,
             email : document.getElementById('email').value,
