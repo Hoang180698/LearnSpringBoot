@@ -6,7 +6,7 @@ let users = [];
 
 const getUsers = async() => {
     try {
-        let res = await axios.get(`${API_URL}/allUsers`);
+        let res = await axios.get(`${API_URL}/users`);
         console.log(res);
         users = res.data;
 
@@ -57,7 +57,7 @@ search.addEventListener("keydown", async function(event) {
     if (event.key == "Enter") {
         try {
             let name = document.querySelector('input').value;
-            let res = await axios.get(`${API_URL}/search?name=${name}`);
+            let res = await axios.get(`${API_URL}/users/search?name=${name}`);
             console.log(res);
             users = res.data;
     
