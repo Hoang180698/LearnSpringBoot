@@ -35,4 +35,9 @@ public class Category {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    @PreRemove
+    public void preRemove() {
+
+    }
 }

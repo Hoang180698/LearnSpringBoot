@@ -1,7 +1,9 @@
 package com.example.blogbackend.entity;
 
+import com.example.blogbackend.repository.CommentRepository;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -76,4 +78,11 @@ public class Blog {
             publishedAt = null;
         }
     }
+
+    @PreRemove
+    public void preRemove() {
+        categories = null;
+    }
+
 }
+

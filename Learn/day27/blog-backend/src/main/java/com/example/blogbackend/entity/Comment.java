@@ -43,6 +43,5 @@ public class Comment {
     @PreUpdate
     public void preUpdate() {
         updatedAt = LocalDateTime.now();
-
     }
 }

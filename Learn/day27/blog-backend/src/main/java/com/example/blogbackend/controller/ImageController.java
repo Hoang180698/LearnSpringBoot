@@ -32,7 +32,7 @@ public class ImageController {
     }
 
     // Upload ảnh
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> uploadImage(@ModelAttribute("file")MultipartFile file) {
         return new ResponseEntity<>(imageService.uploadImage(file), HttpStatus.CREATED);
     }

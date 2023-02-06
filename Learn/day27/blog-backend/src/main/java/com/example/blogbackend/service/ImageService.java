@@ -98,5 +98,10 @@ public class ImageService {
     }
 
     public void deleteImage(Integer id) {
+        Image image = imageRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found image with id = " + id);
+        });
+
+        imageRepository.delete(image);
     }
 }
