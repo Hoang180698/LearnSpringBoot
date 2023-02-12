@@ -4,8 +4,9 @@ import axios from 'axios'
 const API_URL = "http://localhost:8080/api/v1/todos"
 
 // fetchTodos : Thunk action creator
-// 
-//
+// Thunk action trả về 1 promise
+// todos/fetchTodos : action type
+
 export const fetchTodos = createAsyncThunk(
     'todos/fetchTodos',
     async () => {

@@ -1,9 +1,12 @@
 package com.example.blogbackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Table(name = "category")
@@ -22,6 +25,12 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @JsonBackReference
+    @ManyToMany
+    @JoinTable(name = "category_blogs",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "blogs_id"))
+    private List<Blog> blogs = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -38,6 +47,9 @@ public class Category {
 
     @PreRemove
     public void preRemove() {
-
+        for (Blog b: blogs
+             ) {
+            b.getCategories().remove(this);
+        }
     }
 }

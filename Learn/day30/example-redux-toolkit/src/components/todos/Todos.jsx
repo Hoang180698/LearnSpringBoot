@@ -48,8 +48,8 @@ function Todos() {
 
         const updatedTodo = {
             id,
-            title: currentTodo.title,
-            status : !currentTodo.status
+            title: newTitle,
+            status : currentTodo.status
         }
         dispatch(updateTodo(updatedTodo));
     };

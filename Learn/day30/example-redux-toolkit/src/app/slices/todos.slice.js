@@ -19,7 +19,7 @@ const todosSlice = createSlice({
         state.splice(index, 1);
     },
     updateTodo : (state, action) => {
-        const { id } = action.payload.id;
+        const { id } = action.payload;
         const index = state.findIndex(todo => todo.id === id); // Tìm index todo cần xóa trong state
         state[index] = action.payload;
     }
