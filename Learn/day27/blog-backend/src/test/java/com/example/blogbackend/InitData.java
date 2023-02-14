@@ -127,4 +127,11 @@ public class InitData {
             commentRepository.save(comment);
         }
     }
+
+    @Test
+    void getBlogOrderbyPunishAt() {
+        List<Blog> blogs = blogRepository.getBlogOrOrderByPublishedAt();
+
+        blogs.forEach(System.out::println);
+    }
 }

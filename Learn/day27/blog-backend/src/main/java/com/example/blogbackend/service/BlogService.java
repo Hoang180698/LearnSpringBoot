@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -105,5 +106,19 @@ public class BlogService {
 
         blogRepository.delete(blog);
         commentRepository.deleteAllByBlog(blog);
+    }
+
+    public List<Blog> getBlogsPublishedOrderByPushedAt() {
+        return blogRepository.getBlogOrOrderByPublishedAt();
+    }
+
+    public Blog getBlogPublishedById(Integer id) {
+        return blogRepository.getBlogPublishedById(id).orElseThrow(() -> {
+            throw new NotFoundException("Not found user with id = " + id);
+        });
+    }
+
+    public List<Blog> getBlogsByKeyword(String keyword) {
+        return blogRepository.getBlogsByKeyword(keyword);
     }
 }

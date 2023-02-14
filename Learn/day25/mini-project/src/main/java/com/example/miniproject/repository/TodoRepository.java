@@ -25,4 +25,5 @@ public interface TodoRepository extends JpaRepository<Todo, Integer>{
     @Modifying
     @Query(nativeQuery = true, value = "update todo u set u.status  = ?2 where u.id = ?1")
     void updateStatusById(int id, boolean status);
+
 }

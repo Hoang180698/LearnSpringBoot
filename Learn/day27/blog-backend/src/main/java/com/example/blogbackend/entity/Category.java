@@ -5,10 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
+@ToString
 @Table(name = "category")
 @Entity
 @Getter
@@ -25,12 +24,11 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference
     @ManyToMany
-    @JoinTable(name = "category_blogs",
+    @JoinTable(name = "blog_category",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "blogs_id"))
-    private List<Blog> blogs = new ArrayList<>();
+    private Set<Blog> blogs = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

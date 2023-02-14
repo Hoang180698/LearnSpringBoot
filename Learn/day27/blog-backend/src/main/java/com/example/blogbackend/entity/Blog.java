@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+@ToString
 @Table(name = "blog")
 @Entity
 @Getter
@@ -55,7 +56,7 @@ public class Blog {
 
     @ManyToMany
     @JoinTable(name = "blog_category",
-            joinColumns = @JoinColumn(name = "blog_id"),
+            joinColumns = @JoinColumn(name = "blogs_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new LinkedHashSet<>();
 

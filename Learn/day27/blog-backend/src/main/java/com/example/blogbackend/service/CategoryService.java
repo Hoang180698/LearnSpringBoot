@@ -1,5 +1,6 @@
 package com.example.blogbackend.service;
 
+import com.example.blogbackend.Dto.CategoryDto;
 import com.example.blogbackend.entity.Category;
 import com.example.blogbackend.exception.NotFoundException;
 import com.example.blogbackend.repository.CategoryRepository;
@@ -7,6 +8,7 @@ import com.example.blogbackend.request.CategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,5 +48,15 @@ public class CategoryService {
             throw new NotFoundException("Not found category with id = " + id);
         });
         categoryRepository.delete(category);
+    }
+
+    public List<CategoryDto> getAllCategoryAndAmountUsed() {
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryDto> categoryDtos = new ArrayList<>();
+        for (Category category: categories) {
+            CategoryDto categoryDto = new CategoryDto(category.getId(), category.getName(), category.getBlogs().size());
+            categoryDtos.add(categoryDto);
+        }
+        return categoryDtos;
     }
 }
